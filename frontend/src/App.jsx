@@ -1,8 +1,7 @@
-import './App.css'
-import Sidebar from './components/Sidebar'
-import Header from './components/Header'
-import KanbanBoard from './components/KanbanQuadro'
-import SystemLogs from './components/SystemLogs'
+import './css/App.css'
+import Sidebar from './componentes/Sidebar'
+import Header from './componentes/Header'
+import KanbanQuadro from './componentes/KanbanQuadro'
 
 function App() {
   return (
@@ -11,8 +10,7 @@ function App() {
 
       <main className="main-content">
         <Header />
-        <KanbanBoard />
-        <SystemLogs />
+        <KanbanQuadro />
       </main>
     </div>
   )
