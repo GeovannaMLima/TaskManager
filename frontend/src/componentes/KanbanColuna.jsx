@@ -1,24 +1,40 @@
 import '../css/KanbanColuna.css'
 import TaskCard from './TaskCard'
 
-function KanbanColuna({ titulo, quantidade, tarefas }) {
+function KanbanColuna({
+  titulo,
+  quantidade,
+  tarefas,
+  onDrop
+}) {
+  const status = titulo.toLowerCase().replace(' ', '-')
+
   return (
-    <div className="kanban-column">
+    <div
+      className="kanban-column"
+      onDragOver={(event) => event.preventDefault()}
+      onDrop={(event) => onDrop(event, status)}
+    >
       <div className="column-header">
         <div className="column-title">
-          <span className={`status-dot ${titulo.toLowerCase().replace(' ', '-')}`}></span>
+          <span className={`status-dot ${status}`}></span>
 
           <h2>{titulo}</h2>
-          <span className="task-count">{quantidade}</span>
+
+          <span className="task-count">
+            {quantidade}
+          </span>
         </div>
 
-        <button className="column-add">+</button>
+        <button className="column-add">
+          +
+        </button>
       </div>
 
       <div className="column-tasks">
-        {tarefas.map((tarefa, index) => (
+        {tarefas.map((tarefa) => (
           <TaskCard
-            key={index}
+            key={tarefa.id}
             tarefa={tarefa}
           />
         ))}
