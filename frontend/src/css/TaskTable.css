@@ -1,0 +1,277 @@
+.task-table-container {
+  width: 100%;
+
+  overflow: hidden;
+
+  background-color: #ffffff;
+
+  border: 0.0625rem solid #e3e7ee;
+  border-radius: 0.75rem;
+
+  box-sizing: border-box;
+}
+
+/* TABELA */
+
+.task-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-family: 'Inter', sans-serif;
+}
+
+/* CABEÇALHO */
+
+.task-table th {
+  height: 2.75rem;
+
+  padding: 0 1.125rem;
+
+  background-color: #fafbfc;
+
+  border-bottom: 0.0625rem solid #e5e8ee;
+
+  color: #8b95a7;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+
+  text-align: left;
+}
+
+/* LINHAS */
+
+.task-table td {
+  height: 3.25rem;
+
+  padding: 0 1.125rem;
+
+  border-bottom: 0.0625rem solid #edf0f4;
+
+  color: #596273;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+}
+
+.task-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.task-table tbody tr:hover {
+  background-color: #fafbff;
+}
+
+/* TÍTULO DA TAREFA */
+
+.task-title {
+  color: #303846 !important;
+  font-weight: 600;
+}
+
+/* TIPO */
+
+.task-type {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0.25rem 0.5rem;
+
+  border-radius: 0.25rem;
+
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+.task-type.bug {
+  background-color: #ffe9e9;
+  color: #ef4444;
+}
+
+.task-type.feature {
+  background-color: #eeeaff;
+  color: #805cff;
+}
+
+.task-type.refactor {
+  background-color: #e4f8f2;
+  color: #11a982;
+}
+
+/* STATUS */
+
+.task-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+.status-dot,
+.priority-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+}
+
+/*
+   CORES DOS STATUS
+   Mantidas de acordo com o padrão visual do Dashboard
+*/
+
+.task-status.to-do {
+  color: #f59e0b;
+}
+
+.task-status.to-do .status-dot {
+  background-color: #f59e0b;
+}
+
+.task-status.doing {
+  color: #f97316;
+}
+
+.task-status.doing .status-dot {
+  background-color: #f97316;
+}
+
+.task-status.done {
+  color: #10b981;
+}
+
+.task-status.done .status-dot {
+  background-color: #10b981;
+}
+
+/* PRIORIDADE */
+
+.table-priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+.table-priority.alta {
+  color: #ef4444;
+}
+
+.table-priority.alta .priority-dot {
+  background-color: #ef4444;
+}
+
+.table-priority.média {
+  color: #f59e0b;
+}
+
+.table-priority.média .priority-dot {
+  background-color: #f59e0b;
+}
+
+.table-priority.baixa {
+  color: #10b981;
+}
+
+.table-priority.baixa .priority-dot {
+  background-color: #10b981;
+}
+
+/* VENCIMENTO */
+
+.task-due-date {
+  color: #8b95a7 !important;
+}
+
+/* AÇÕES */
+
+.action-button {
+  width: 1.75rem;
+  height: 1.75rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #a0a8b8;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+
+  cursor: pointer;
+}
+
+.action-button:hover {
+  color: #5b5ce2;
+}
+
+/* RODAPÉ */
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0.875rem 1.125rem;
+
+  border-top: 0.0625rem solid #edf0f4;
+
+  color: #8b95a7;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6875rem;
+}
+
+/* PAGINAÇÃO */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pagination button {
+  min-width: 1.875rem;
+  height: 1.875rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 0.5rem;
+
+  border: none;
+  border-radius: 0.375rem;
+
+  background-color: transparent;
+
+  color: #657083;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6875rem;
+
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #f3f4ff;
+}
+
+.pagination .page-active {
+  background-color: #5b5ce2;
+  color: #ffffff;
+}
