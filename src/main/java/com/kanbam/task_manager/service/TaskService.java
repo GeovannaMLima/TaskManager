@@ -1,6 +1,5 @@
 package com.kanbam.task_manager.service;
 
-
 import com.kanbam.task_manager.domain.entity.Task;
 import com.kanbam.task_manager.domain.enums.StatusEnum;
 import com.kanbam.task_manager.dtos.TaskRequestDTO;
@@ -21,42 +20,65 @@ public class TaskService {
     }
 
     public TaskResponseDTO criarTarefa(TaskRequestDTO requestDTO) {
+
         Task task = new Task(
                 requestDTO.titulo(),
                 requestDTO.descricao(),
                 requestDTO.tipo(),
-                requestDTO.prioridade()
+                requestDTO.prioridade(),
+                requestDTO.dataVencimento()
         );
+
         task.setStatus(StatusEnum.TODO);
 
         Task salva = taskRepository.save(task);
+
         return toResponseDTO(salva);
     }
 
     public List<TaskResponseDTO> listarTarefas() {
+
         return taskRepository.findAll()
                 .stream()
                 .map(this::toResponseDTO)
                 .toList();
     }
 
+    public void excluirTarefa(Long id) {
 
-    public TaskResponseDTO moverTarefa(Long id, TaskStatusUpdateDTO statusUpdateDTO) {
+        if (!taskRepository.existsById(id)) {
+            throw new IllegalArgumentException(
+                    "Tarefa não encontrada: id=" + id
+            );
+        }
+
+        taskRepository.deleteById(id);
+    }
+
+    public TaskResponseDTO moverTarefa(
+            Long id,
+            TaskStatusUpdateDTO statusUpdateDTO
+    ) {
+
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada: id=" + id));
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Tarefa não encontrada: id=" + id
+                        )
+                );
 
         task.setStatus(statusUpdateDTO.status());
+
         Task atualizada = taskRepository.save(task);
 
         // TODO: Ponto de injeção para o Padrão Observer
-        // plugar a notificação/log de mudança de status,
-
+        // plugar a notificação/log de mudança de status
 
         return toResponseDTO(atualizada);
     }
 
-
     private TaskResponseDTO toResponseDTO(Task task) {
+
         return new TaskResponseDTO(
                 task.getId(),
                 task.getTitulo(),
@@ -64,7 +86,8 @@ public class TaskService {
                 task.getStatus(),
                 task.getTipo(),
                 task.getPrioridade(),
-                task.getDataCriacao()
+                task.getDataCriacao(),
+                task.getDataVencimento()
         );
     }
 }

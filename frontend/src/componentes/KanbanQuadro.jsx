@@ -1,125 +1,349 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
 import '../css/KanbanQuadro.css'
+
 import KanbanColuna from './KanbanColuna'
 
-const tarefasIniciais = {
-  todo: [
-    {
-      id: 1,
-      titulo: 'Corrigir erro de autenticação',
-      tipo: 'Bug',
-      prioridade: 'Alta',
-      dataVencimento: '25/08/2026',
-      status: 'TODO'
-    },
-    {
-      id: 2,
-      titulo: 'Implementar página de login',
-      tipo: 'Feature',
-      prioridade: 'Média',
-      dataVencimento: '28/08/2026',
-      status: 'TODO'
-    },
-    {
-      id: 3,
-      titulo: 'Refatorar serviço de e-mail',
-      tipo: 'Refactor',
-      prioridade: 'Baixa',
-      dataVencimento: '02/09/2026',
-      status: 'TODO'
-    }
-  ],
-
-  doing: [
-    {
-      id: 4,
-      titulo: 'Desenhar wireframes do dashboard',
-      tipo: 'Feature',
-      prioridade: 'Alta',
-      dataVencimento: '20/08/2026',
-      status: 'DOING'
-    },
-    {
-      id: 5,
-      titulo: 'Ajustar regras do Factory Method',
-      tipo: 'Feature',
-      prioridade: 'Média',
-      dataVencimento: '30/08/2026',
-      status: 'DOING'
-    }
-  ],
-
-  done: [
-    {
-      id: 6,
-      titulo: 'Integrar biblioteca de ícones',
-      tipo: 'Feature',
-      prioridade: 'Média',
-      dataVencimento: '15/08/2026',
-      status: 'DONE'
-    },
-    {
-      id: 7,
-      titulo: 'Corrigir vazamento de memória',
-      tipo: 'Bug',
-      prioridade: 'Alta',
-      dataVencimento: '18/08/2026',
-      status: 'DONE'
-    }
-  ]
-}
 
 function KanbanQuadro() {
-  const [tarefas, setTarefas] = useState(tarefasIniciais)
 
-  function moverTarefa(event, novoStatus) {
-    const taskId = Number(event.dataTransfer.getData('taskId'))
+  const [tarefas, setTarefas] = useState({
+    todo: [],
+    doing: [],
+    done: []
+  })
 
-    let tarefaMovida = null
-    let colunaAnterior = null
+  const [carregando, setCarregando] = useState(true)
 
-    Object.entries(tarefas).forEach(([coluna, lista]) => {
-      const tarefa = lista.find((item) => item.id === taskId)
+  const [erro, setErro] = useState('')
 
-      if (tarefa) {
-        tarefaMovida = tarefa
-        colunaAnterior = coluna
+
+  useEffect(() => {
+    buscarTarefas()
+  }, [])
+
+
+  async function buscarTarefas() {
+
+    try {
+
+      setCarregando(true)
+
+      setErro('')
+
+      const resposta = await fetch(
+        'http://localhost:8080/api/tasks'
+      )
+
+      if (!resposta.ok) {
+        throw new Error(
+          'Não foi possível carregar as tarefas.'
+        )
       }
-    })
 
-    if (!tarefaMovida || colunaAnterior === novoStatus) {
-      return
+      const dados = await resposta.json()
+
+      console.log(
+        'Tarefas recebidas pelo Kanban:',
+        dados
+      )
+
+
+      const novasTarefas = {
+        todo: [],
+        doing: [],
+        done: []
+      }
+
+
+      dados.forEach((tarefa) => {
+
+        if (tarefa.status === 'TODO') {
+          novasTarefas.todo.push(tarefa)
+        }
+
+        if (tarefa.status === 'DOING') {
+          novasTarefas.doing.push(tarefa)
+        }
+
+        if (tarefa.status === 'DONE') {
+          novasTarefas.done.push(tarefa)
+        }
+
+      })
+
+
+      setTarefas(novasTarefas)
+
+    } catch (error) {
+
+      console.error(
+        'Erro ao buscar tarefas:',
+        error
+      )
+
+      setErro(
+        'Não foi possível carregar as tarefas.'
+      )
+
+    } finally {
+
+      setCarregando(false)
+
+    }
+  }
+
+
+  async function atualizarStatus(id, novoStatus) {
+
+    const statusMap = {
+      todo: 'TODO',
+      'to-do': 'TODO',
+      doing: 'DOING',
+      done: 'DONE'
     }
 
-    const novasTarefas = {
-      ...tarefas
-    }
 
-    novasTarefas[colunaAnterior] = novasTarefas[colunaAnterior].filter(
-      (tarefa) => tarefa.id !== taskId
+    const statusBackend =
+      statusMap[novoStatus.toLowerCase()]
+      || novoStatus.toUpperCase()
+
+
+    const resposta = await fetch(
+      `http://localhost:8080/api/tasks/${id}/status`,
+      {
+        method: 'PATCH',
+
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+          status: statusBackend
+        })
+      }
     )
 
-    const tarefaAtualizada = {
-      ...tarefaMovida,
-      status: novoStatus.toUpperCase()
+
+    if (!resposta.ok) {
+
+      throw new Error(
+        'Não foi possível atualizar o status.'
+      )
+
     }
 
-    novasTarefas[novoStatus] = [
-      ...novasTarefas[novoStatus],
-      tarefaAtualizada
-    ]
 
-    setTarefas(novasTarefas)
+    return resposta.json()
   }
+
+
+  async function moverTarefa(event, novoStatus) {
+
+    const taskId = Number(
+      event.dataTransfer.getData('taskId')
+    )
+
+
+    /*
+     * O Kanban trabalha com:
+     *
+     * todo
+     * doing
+     * done
+     *
+     * Enquanto o backend trabalha com:
+     *
+     * TODO
+     * DOING
+     * DONE
+     */
+
+    const colunaDestino =
+      novoStatus.toLowerCase() === 'to-do'
+        ? 'todo'
+        : novoStatus.toLowerCase()
+
+
+    let tarefaMovida = null
+
+    let colunaAnterior = null
+
+
+    /*
+     * Descobre em qual coluna a tarefa
+     * estava anteriormente.
+     */
+
+    Object.entries(tarefas).forEach(
+      ([coluna, lista]) => {
+
+        const tarefa = lista.find(
+          (item) => item.id === taskId
+        )
+
+
+        if (tarefa) {
+
+          tarefaMovida = tarefa
+
+          colunaAnterior = coluna
+
+        }
+
+      }
+    )
+
+
+    /*
+     * Se não encontrou a tarefa ou
+     * ela já está na coluna de destino,
+     * não faz nada.
+     */
+
+    if (
+      !tarefaMovida ||
+      colunaAnterior === colunaDestino
+    ) {
+
+      return
+
+    }
+
+
+    try {
+
+      setErro('')
+
+
+      /*
+       * Primeiro atualiza o backend.
+       */
+
+      await atualizarStatus(
+        tarefaMovida.id,
+        colunaDestino
+      )
+
+
+      /*
+       * Depois atualiza o estado visual.
+       */
+
+      const novasTarefas = {
+        ...tarefas,
+
+        [colunaAnterior]: [
+          ...tarefas[colunaAnterior]
+        ],
+
+        [colunaDestino]: [
+          ...tarefas[colunaDestino]
+        ]
+      }
+
+
+      /*
+       * Remove a tarefa da coluna anterior.
+       */
+
+      novasTarefas[colunaAnterior] =
+        novasTarefas[colunaAnterior].filter(
+          (tarefa) =>
+            tarefa.id !== taskId
+        )
+
+
+      /*
+       * Converte o nome da coluna
+       * para o enum utilizado pelo backend.
+       */
+
+      const statusMap = {
+        todo: 'TODO',
+        doing: 'DOING',
+        done: 'DONE'
+      }
+
+
+      const tarefaAtualizada = {
+        ...tarefaMovida,
+
+        status: statusMap[colunaDestino]
+      }
+
+
+      /*
+       * Adiciona a tarefa na nova coluna.
+       */
+
+      novasTarefas[colunaDestino] = [
+        ...novasTarefas[colunaDestino],
+
+        tarefaAtualizada
+      ]
+
+
+      setTarefas(novasTarefas)
+
+
+    } catch (error) {
+
+      console.error(
+        'Erro ao mover tarefa:',
+        error
+      )
+
+
+      setErro(
+        'Não foi possível alterar o status da tarefa.'
+      )
+
+    }
+
+  }
+
+
+  if (carregando) {
+
+    return (
+      <section className="kanban-board">
+
+        <p className="kanban-message">
+          Carregando tarefas...
+        </p>
+
+      </section>
+    )
+
+  }
+
+
+  if (erro) {
+
+    return (
+      <section className="kanban-board">
+
+        <p className="kanban-message kanban-error">
+          {erro}
+        </p>
+
+      </section>
+    )
+
+  }
+
 
   return (
     <section className="kanban-board">
+
       <KanbanColuna
         titulo="To Do"
         quantidade={tarefas.todo.length}
         tarefas={tarefas.todo}
         onDrop={moverTarefa}
       />
+
 
       <KanbanColuna
         titulo="Doing"
@@ -128,14 +352,17 @@ function KanbanQuadro() {
         onDrop={moverTarefa}
       />
 
+
       <KanbanColuna
         titulo="Done"
         quantidade={tarefas.done.length}
         tarefas={tarefas.done}
         onDrop={moverTarefa}
       />
+
     </section>
   )
 }
+
 
 export default KanbanQuadro

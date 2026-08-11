@@ -4,6 +4,7 @@ import com.kanbam.task_manager.domain.enums.PrioridadeEnum;
 import com.kanbam.task_manager.domain.enums.StatusEnum;
 import com.kanbam.task_manager.domain.enums.TipoEnum;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record TaskResponseDTO(
@@ -13,6 +14,7 @@ public record TaskResponseDTO(
         StatusEnum status,
         TipoEnum tipo,
         PrioridadeEnum prioridade,
-        LocalDateTime dataCriacao
+        LocalDateTime dataCriacao,
+        LocalDate dataVencimento
 ) {
 }

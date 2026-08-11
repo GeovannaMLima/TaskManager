@@ -21,7 +21,9 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskResponseDTO criarTarefa(@RequestBody TaskRequestDTO requestDTO) {
+    public TaskResponseDTO criarTarefa(
+            @RequestBody TaskRequestDTO requestDTO
+    ) {
         return taskService.criarTarefa(requestDTO);
     }
 
@@ -35,6 +37,15 @@ public class TaskController {
             @PathVariable Long id,
             @RequestBody TaskStatusUpdateDTO statusUpdateDTO
     ) {
-        return taskService.moverTarefa(id, statusUpdateDTO);
+        return taskService.moverTarefa(
+                id,
+                statusUpdateDTO
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void excluirTarefa(@PathVariable Long id) {
+        taskService.excluirTarefa(id);
     }
 }

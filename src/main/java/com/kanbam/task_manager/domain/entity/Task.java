@@ -1,11 +1,11 @@
 package com.kanbam.task_manager.domain.entity;
 
-
 import com.kanbam.task_manager.domain.enums.PrioridadeEnum;
 import com.kanbam.task_manager.domain.enums.StatusEnum;
 import com.kanbam.task_manager.domain.enums.TipoEnum;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -37,15 +37,25 @@ public class Task {
     @Column(name = "data_criacao", nullable = false, updatable = false)
     private LocalDateTime dataCriacao;
 
+    @Column(name = "data_vencimento")
+    private LocalDate dataVencimento;
+
 
     public Task() {
     }
 
-    public Task(String titulo, String descricao, TipoEnum tipo, PrioridadeEnum prioridade) {
+    public Task(
+            String titulo,
+            String descricao,
+            TipoEnum tipo,
+            PrioridadeEnum prioridade,
+            LocalDate dataVencimento
+    ) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.tipo = tipo;
         this.prioridade = prioridade;
+        this.dataVencimento = dataVencimento;
     }
 
     @PrePersist
@@ -108,5 +118,13 @@ public class Task {
 
     public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDate getDataVencimento() {
+        return dataVencimento;
+    }
+
+    public void setDataVencimento(LocalDate dataVencimento) {
+        this.dataVencimento = dataVencimento;
     }
 }

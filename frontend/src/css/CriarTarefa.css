@@ -1,0 +1,415 @@
+.criar-tarefa-page {
+  width: 100%;
+  min-height: 100vh;
+
+  background-color: #f5f7fb;
+}
+
+/* CONTEÚDO */
+
+.criar-tarefa-content {
+  width: 100%;
+  max-width: 52rem;
+
+  margin: 0 auto;
+
+  padding: 2rem 2.5rem 4rem;
+
+  box-sizing: border-box;
+}
+
+/* BREADCRUMB */
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-bottom: 0.625rem;
+
+  color: #9aa3b5;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+}
+
+.breadcrumb strong {
+  color: #5b5ce2;
+  font-weight: 500;
+}
+
+/* TÍTULO */
+
+.criar-tarefa-heading {
+  margin-bottom: 1.5rem;
+}
+
+.criar-tarefa-heading h1 {
+  margin: 0;
+
+  color: #172033;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* FORMULÁRIO */
+
+.task-form {
+  width: 100%;
+  max-width: 44rem;
+
+  margin: 0 auto;
+
+  padding: 2rem;
+
+  box-sizing: border-box;
+
+  background-color: #ffffff;
+
+  border: 0.0625rem solid #e3e7ee;
+  border-radius: 0.875rem;
+
+  box-shadow: 0 0.125rem 0.5rem rgba(30, 41, 59, 0.05);
+}
+
+/* CAMPOS */
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 0.625rem;
+
+  color: #303846;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.form-group label span {
+  color: #ef4444;
+}
+
+/* INPUTS */
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 0.0625rem solid #dfe4ec;
+  border-radius: 0.5625rem;
+
+  background-color: #ffffff;
+
+  color: #303846;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
+
+  outline: none;
+}
+
+.form-group input {
+  height: 2.75rem;
+
+  padding: 0 0.875rem;
+}
+
+.form-group textarea {
+  height: 6.5rem;
+
+  padding: 0.875rem;
+
+  resize: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #aab2c0;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #5b5ce2;
+}
+
+/* TIPO */
+
+.option-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.type-option {
+  height: 2.25rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0 1rem;
+
+  background-color: #ffffff;
+
+  border: 0.0625rem solid #e1e5ed;
+  border-radius: 0.5625rem;
+
+  color: #596273;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+
+  cursor: pointer;
+}
+
+.type-option.selected {
+  border-color: #5b5ce2;
+  color: #5b5ce2;
+}
+
+.option-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+}
+
+.type-option.bug .option-dot {
+  background-color: #ef4444;
+}
+
+.type-option.feature .option-dot {
+  background-color: #805cff;
+}
+
+.type-option.refactor .option-dot {
+  background-color: #11a982;
+}
+
+/* PRIORIDADE + DATA */
+
+.form-row {
+  display: flex;
+  gap: 1.25rem;
+
+  margin-bottom: 1.5rem;
+}
+
+.priority-group {
+  width: 50%;
+}
+
+.date-group {
+  width: 50%;
+}
+
+.priority-options {
+  height: 2.75rem;
+
+  display: flex;
+
+  overflow: hidden;
+
+  border: 0.0625rem solid #edf0f4;
+  border-radius: 0.5625rem;
+
+  background-color: #fafbfc;
+}
+
+.priority-option {
+  flex: 1;
+
+  border: none;
+
+  background-color: transparent;
+
+  color: #657083;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+
+  cursor: pointer;
+}
+
+.priority-option.selected {
+  background-color: #ffffff;
+
+  color: #5b5ce2;
+
+  box-shadow: 0 0.0625rem 0.25rem rgba(30, 41, 59, 0.08);
+}
+
+/* DATA */
+
+.date-input {
+  position: relative;
+}
+
+.date-input input {
+  padding-right: 2.5rem;
+}
+
+.calendar-icon {
+  position: absolute;
+
+  top: 50%;
+  right: 0.875rem;
+
+  transform: translateY(-50%);
+
+  color: #7d8799;
+
+  font-size: 0.875rem;
+}
+
+/* STATUS */
+
+.status-options {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.status-option {
+  flex: 1;
+
+  height: 2.75rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  background-color: #ffffff;
+
+  border: 0.0625rem solid #e1e5ed;
+  border-radius: 0.5625rem;
+
+  color: #657083;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+
+  cursor: pointer;
+}
+
+.status-option.selected {
+  border-color: #5b5ce2;
+
+  background-color: #f7f7ff;
+
+  color: #5b5ce2;
+}
+
+.status-option.todo .option-dot {
+  background-color: #f59e0b;
+}
+
+.status-option.doing .option-dot {
+  background-color: #f97316;
+}
+
+.status-option.done .option-dot {
+  background-color: #10b981;
+}
+
+/* AÇÕES */
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+
+  border-top: 0.0625rem solid #edf0f4;
+}
+
+.cancel-button {
+  height: 2.5rem;
+
+  padding: 0 1.125rem;
+
+  background-color: #ffffff;
+
+  border: 0.0625rem solid #e1e5ed;
+  border-radius: 0.5625rem;
+
+  color: #596273;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #f8f9fb;
+}
+
+.create-button {
+  height: 2.5rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0 1.25rem;
+
+  background-color: #5b5ce2;
+
+  border: none;
+  border-radius: 0.5625rem;
+
+  color: #ffffff;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 0.25rem 0.75rem rgba(91, 92, 226, 0.2);
+}
+
+.create-button:hover {
+  background-color: #5051d4;
+}
+
+.create-button span {
+  font-size: 0.875rem;
+}
+
+
+.form-error {
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+
+  padding: 0.75rem 0.875rem;
+
+  background-color: #fff1f2;
+
+  border: 0.0625rem solid #fecdd3;
+  border-radius: 0.5rem;
+
+  color: #dc2626;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+}
+
+.create-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
