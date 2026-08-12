@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
+@CrossOrigin(origins = "http://localhost:5173")
 public class TaskController {
 
     private final TaskService taskService;
@@ -26,8 +27,10 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskResponseDTO> listarTarefas() {
-        return taskService.listarTarefas();
+    public List<TaskResponseDTO> listarTarefas(
+            @RequestParam(required = false) String sort
+    ) {
+        return taskService.listarTarefas(sort);
     }
 
     @PatchMapping("/{id}/status")

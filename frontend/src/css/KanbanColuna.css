@@ -1,0 +1,88 @@
+.kanban-column {
+  min-width: 0;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 1rem;
+}
+
+.column-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.column-title h2 {
+  margin: 0;
+
+  color: #394150;
+
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.task-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 1.5rem;
+  height: 1.5rem;
+
+  border-radius: 50%;
+
+  background-color: #eef0f5;
+  color: #7b8495;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+
+  border-radius: 50%;
+}
+
+.status-dot.to-do {
+  background-color: #f59e0b;
+}
+
+.status-dot.doing {
+  background-color: #f97316;
+}
+
+.status-dot.done {
+  background-color: #22c55e;
+}
+
+.column-add {
+  width: 1.75rem;
+  height: 1.75rem;
+
+  border: none;
+  background: transparent;
+
+  color: #9aa1b2;
+
+  font-family: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.column-add:hover {
+  color: #5b5ce2;
+}
+
+.column-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}

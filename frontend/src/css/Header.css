@@ -1,0 +1,91 @@
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.header-title h1 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.header-title p {
+  margin: 0.5rem 0 0;
+
+  color: #8a92a3;
+
+  font-size: 0.875rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.new-task-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  border: none;
+  border-radius: 0.5rem;
+
+  padding: 0.75rem 1.25rem;
+
+  background-color: #5b5ce2;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  box-shadow: 0 0.25rem 0.75rem rgba(91, 92, 226, 0.2);
+
+  transition: background-color 0.2s ease;
+}
+
+.new-task-button:hover {
+  background-color: #4d4ed0;
+}
+
+.new-task-button span {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.user-name {
+  color: #596273;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.user-avatar {
+  width: 2rem;
+  height: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background-color: #d8d9f8;
+  color: #555bd8;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+}

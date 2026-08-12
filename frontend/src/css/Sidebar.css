@@ -1,0 +1,155 @@
+.sidebar {
+  width: 30.6rem;
+  min-width: 30.6rem;
+  min-height: 100vh;
+  background-color: #ffffff;
+  border-right: 0.4rem solid #e5e7eb;
+  padding: 2.3rem 1.9rem;
+  box-sizing: border-box;
+}
+
+/* LOGO */
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0 0.4rem 2.3rem;
+  border-bottom: 0.4rem solid #eeeeee;
+}
+
+.logo-icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 0.6rem;
+  background-color: #5b5ce2;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.2rem;
+}
+
+.sidebar-logo h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.sidebar-logo span {
+  display: block;
+  margin-top: 0.3rem;
+  color: #9aa1b2;
+  font-size: 0.6rem;
+}
+
+/* MENU */
+
+.sidebar-menu {
+  margin-top: 1.4rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+
+  height: 4.1rem;
+  padding: 0 0.9rem;
+  margin-bottom: 0.3rem;
+
+  border-radius: 0.4rem;
+
+  color: #657083;
+  text-decoration: none;
+
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.menu-item span {
+  width: 1.4rem;
+  text-align: center;
+  color: #5965df;
+}
+
+.menu-item:hover {
+  background-color: #f3f4ff;
+}
+
+.menu-item.active {
+  background-color: #eeefff;
+  color: #555bd8;
+  font-weight: 600;
+}
+
+/* SEÇÕES */
+
+.sidebar-section {
+  margin-top: 2.8rem;
+}
+
+.section-title {
+  display: block;
+  margin-bottom: 0.7rem;
+
+  color: #969eae;
+
+  font-size: 0.6rem;
+  font-weight: 700;
+
+  letter-spacing: 0.0rem;
+}
+
+/* ORDENAÇÃO */
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  margin-bottom: 0.6rem;
+
+  color: #657083;
+  font-size: 0.9rem;
+}
+
+.radio-option input {
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: 0;
+
+  accent-color: #5b5ce2;
+}
+
+/* PADRÕES */
+
+.pattern {
+  margin-bottom: 0.6rem;
+  padding: 0.6rem 0.7rem;
+
+  background-color: #f7f7ff;
+  border-radius: 0.4rem;
+}
+
+.pattern strong {
+  display: block;
+  margin-bottom: 0.3rem;
+
+  color: #565bdd;
+
+  font-size: 0.6rem;
+  font-weight: 600;
+}
+
+.pattern span {
+  display: block;
+
+  color: #9299a8;
+
+  font-size: 0.6rem;
+  line-height: 1.5;
+}

@@ -1,0 +1,8 @@
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+
+  width: 100%;
+  margin-top: 1.5rem;
+}

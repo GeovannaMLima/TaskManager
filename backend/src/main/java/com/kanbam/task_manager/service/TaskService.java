@@ -6,7 +6,12 @@ import com.kanbam.task_manager.domain.enums.StatusEnum;
 import com.kanbam.task_manager.dtos.TaskRequestDTO;
 import com.kanbam.task_manager.dtos.TaskResponseDTO;
 import com.kanbam.task_manager.dtos.TaskStatusUpdateDTO;
+import com.kanbam.task_manager.factory.TaskFactory;
+import com.kanbam.task_manager.factory.TaskFactoryProvider;
+import com.kanbam.task_manager.observer.TaskStatusPublisher;
 import com.kanbam.task_manager.repository.TaskRepository;
+import com.kanbam.task_manager.strategy.TaskSortStrategy;
+import com.kanbam.task_manager.strategy.TaskSortStrategyProvider;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,42 +20,63 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final TaskFactoryProvider taskFactoryProvider;
+    private final TaskSortStrategyProvider taskSortStrategyProvider;
+    private final TaskStatusPublisher taskStatusPublisher;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository,
+                        TaskFactoryProvider taskFactoryProvider,
+                        TaskSortStrategyProvider taskSortStrategyProvider,
+                        TaskStatusPublisher taskStatusPublisher) {
         this.taskRepository = taskRepository;
+        this.taskFactoryProvider = taskFactoryProvider;
+        this.taskSortStrategyProvider = taskSortStrategyProvider;
+        this.taskStatusPublisher = taskStatusPublisher;
     }
 
+    /**
+     * FACTORY METHOD em ação: o Service não usa "new Task(...)" diretamente.
+     * Ele pede ao provider a fábrica correspondente ao tipo da tarefa e deixa
+     * que ela decida como construir/configurar o objeto.
+     */
     public TaskResponseDTO criarTarefa(TaskRequestDTO requestDTO) {
-        Task task = new Task(
-                requestDTO.titulo(),
-                requestDTO.descricao(),
-                requestDTO.tipo(),
-                requestDTO.prioridade()
-        );
-        task.setStatus(StatusEnum.TODO);
+        TaskFactory factory = taskFactoryProvider.getFactory(requestDTO.tipo());
+        Task task = factory.criarTarefa(requestDTO);
 
         Task salva = taskRepository.save(task);
         return toResponseDTO(salva);
     }
 
-    public List<TaskResponseDTO> listarTarefas() {
+    /**
+     * STRATEGY em ação: o critério de ordenação (data ou prioridade) é
+     * resolvido em tempo de execução a partir do parâmetro "sort" vindo da
+     * API, sem nenhum if/switch aqui no Service.
+     */
+    public List<TaskResponseDTO> listarTarefas(String sort) {
+        TaskSortStrategy strategy = taskSortStrategyProvider.resolve(sort);
+
         return taskRepository.findAll()
                 .stream()
+                .sorted(strategy.getComparator())
                 .map(this::toResponseDTO)
                 .toList();
     }
 
-
+    /**
+     * OBSERVER em ação: após persistir a mudança de status, o publisher
+     * notifica todos os observers registrados (hoje: log em console).
+     */
     public TaskResponseDTO moverTarefa(Long id, TaskStatusUpdateDTO statusUpdateDTO) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada: id=" + id));
 
-        task.setStatus(statusUpdateDTO.status());
+        StatusEnum statusAnterior = task.getStatus();
+        StatusEnum statusNovo = statusUpdateDTO.status();
+
+        task.setStatus(statusNovo);
         Task atualizada = taskRepository.save(task);
 
-        // TODO: Ponto de injeção para o Padrão Observer
-        // plugar a notificação/log de mudança de status,
-
+        taskStatusPublisher.notifyStatusChanged(atualizada, statusAnterior, statusNovo);
 
         return toResponseDTO(atualizada);
     }

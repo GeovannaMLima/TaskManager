@@ -1,0 +1,37 @@
+.tarefas-page {
+  width: 100%;
+  min-height: 100vh;
+
+  background-color: #f5f7fb;
+}
+
+.tarefas-content {
+  padding: 2rem 2.5rem;
+  box-sizing: border-box;
+}
+.tarefas-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 1.5rem;
+}
+
+.tarefas-heading h1 {
+  margin: 0;
+
+  color: #172033;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.tarefas-heading p {
+  margin: 0.375rem 0 0;
+
+  color: #7d8799;
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+}
