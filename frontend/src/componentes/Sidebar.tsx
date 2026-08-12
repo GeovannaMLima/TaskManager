@@ -52,28 +52,7 @@ function Sidebar() {
 
       </nav>
 
-      <div className="sidebar-section">
-        <span className="section-title">
-          ORDENAÇÃO
-        </span>
-
-        <label className="radio-option">
-          <input
-            type="radio"
-            name="ordenacao"
-            defaultChecked
-          />
-          Data de Vencimento
-        </label>
-
-        <label className="radio-option">
-          <input
-            type="radio"
-            name="ordenacao"
-          />
-          Prioridade
-        </label>
-      </div>
+      
 
       <div className="sidebar-section patterns">
         <span className="section-title">

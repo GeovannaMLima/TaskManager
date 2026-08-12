@@ -26,9 +26,7 @@ function KanbanColuna({
           </span>
         </div>
 
-        <button className="column-add">
-          +
-        </button>
+       
       </div>
 
       <div className="column-tasks">

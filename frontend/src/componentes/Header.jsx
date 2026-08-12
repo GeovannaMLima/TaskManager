@@ -1,6 +1,10 @@
 import '../css/Header.css'
+import { useNavigate } from 'react-router-dom'
 
 function Header() {
+
+  const navigate = useNavigate()
+
   return (
     <header className="header">
       <div className="header-title">
@@ -9,7 +13,10 @@ function Header() {
       </div>
 
       <div className="header-actions">
-        <button className="new-task-button">
+       <button
+          className="new-task-button"
+          onClick={() => navigate('/criar-tarefa')}
+        >
           <span>+</span>
           Nova Tarefa
         </button>

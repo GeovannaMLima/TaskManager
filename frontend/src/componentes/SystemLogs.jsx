@@ -3,6 +3,27 @@ import { useEffect, useState } from 'react'
 import '../css/SystemLog.css'
 
 
+function formatarStatus(status) {
+
+  switch (status) {
+
+    case 'TODO':
+      return 'To Do'
+
+    case 'DOING':
+      return 'Doing'
+
+    case 'DONE':
+      return 'Done'
+
+    default:
+      return status
+
+  }
+
+}
+
+
 function formatarHorario(dataHora) {
 
   if (!dataHora) {
@@ -24,92 +45,96 @@ function formatarHorario(dataHora) {
 }
 
 
-function SystemLogs() {
+function criarMensagem(log) {
+
+  const statusAnterior =
+    formatarStatus(log.statusAnterior)
+
+
+  const statusNovo =
+    formatarStatus(log.statusNovo)
+
+
+  return `Tarefa "${log.tituloTarefa}" movida de ${statusAnterior} para ${statusNovo}.`
+
+}
+
+
+function SystemLogs({ refreshTrigger }) {
 
   const [logs, setLogs] = useState([])
 
-  const [carregando, setCarregando] =
-    useState(true)
+  const [carregando, setCarregando] = useState(true)
 
   const [erro, setErro] = useState('')
 
 
   useEffect(() => {
 
-    buscarLogs()
+    async function carregarLogs() {
 
-  }, [])
+      try {
 
-
-  async function buscarLogs() {
-
-    try {
-
-      setCarregando(true)
-
-      setErro('')
+        setErro('')
 
 
-      const resposta = await fetch(
-        'http://localhost:8080/api/logs'
-      )
-
-
-      if (!resposta.ok) {
-
-        throw new Error(
-          'Não foi possível carregar os logs.'
+        const resposta = await fetch(
+          'http://localhost:8080/api/logs'
         )
+
+
+        if (!resposta.ok) {
+
+          throw new Error(
+            'Não foi possível carregar os logs.'
+          )
+
+        }
+
+
+        const dados = await resposta.json()
+
+
+        setLogs(dados)
+
+
+      } catch (error) {
+
+        console.error(
+          'Erro ao carregar logs:',
+          error
+        )
+
+
+        setErro(
+          'Não foi possível carregar os logs do sistema.'
+        )
+
+
+      } finally {
+
+        setCarregando(false)
 
       }
 
-
-      const dados = await resposta.json()
-
-
-      console.log(
-        'Logs recebidos:',
-        dados
-      )
-
-
-      setLogs(dados)
-
-    } catch (error) {
-
-      console.error(
-        'Erro ao buscar logs:',
-        error
-      )
-
-
-      setErro(
-        'Não foi possível carregar os logs do sistema.'
-      )
-
-    } finally {
-
-      setCarregando(false)
-
     }
 
-  }
+
+    carregarLogs()
+
+  }, [refreshTrigger])
 
 
   return (
-
     <section className="system-logs">
 
-
       <div className="logs-header">
-
 
         <div>
 
           <h2>
             Logs do Sistema
           </h2>
-
 
           <p>
             Registro das últimas alterações realizadas nas tarefas.
@@ -122,51 +147,32 @@ function SystemLogs() {
           Observer
         </span>
 
-
       </div>
+
+
+      {erro && (
+        <div className="logs-error">
+          {erro}
+        </div>
+      )}
 
 
       <div className="logs-list">
 
+        {carregando ? (
 
-        {carregando && (
-
-          <div className="log-message">
-
+          <div className="logs-empty">
             Carregando logs...
-
           </div>
 
-        )}
+        ) : logs.length === 0 ? (
 
-
-        {!carregando && erro && (
-
-          <div className="log-message log-error">
-
-            {erro}
-
+          <div className="logs-empty">
+            Nenhuma alteração registrada.
           </div>
 
-        )}
+        ) : (
 
-
-        {!carregando &&
-          !erro &&
-          logs.length === 0 && (
-
-            <div className="log-message">
-
-              Nenhuma alteração registrada.
-
-            </div>
-
-          )
-        }
-
-
-        {!carregando &&
-          !erro &&
           logs.map((log) => (
 
             <div
@@ -179,35 +185,27 @@ function SystemLogs() {
 
               <div className="log-content">
 
-
                 <p>
-                  {log.mensagem}
+                  {criarMensagem(log)}
                 </p>
 
 
                 <span>
-                  {formatarHorario(
-                    log.dataHora
-                  )}
+                  {formatarHorario(log.dataHora)}
                 </span>
 
-
               </div>
-
 
             </div>
 
           ))
-        }
 
+        )}
 
       </div>
 
-
     </section>
-
   )
-
 }
 
 

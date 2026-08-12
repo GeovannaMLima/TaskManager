@@ -16,6 +16,7 @@ function CriarTarefa() {
 
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
+  const [sucesso, setSucesso] = useState(false)
 
   async function criarTarefa(event: React.FormEvent) {
     event.preventDefault()
@@ -57,7 +58,11 @@ function CriarTarefa() {
 
       console.log('Tarefa criada:', tarefaCriada)
 
-      alert('Tarefa criada com sucesso!')
+      setSucesso(true)
+
+      setTimeout(() => {
+        setSucesso(false)
+      }, 2000)
 
       setTitulo('')
       setDescricao('')
@@ -117,6 +122,7 @@ function CriarTarefa() {
               value={titulo}
               onChange={(event) => setTitulo(event.target.value)}
               placeholder="Digite o nome da tarefa"
+              autoComplete='off'
             />
 
           </div>
@@ -333,6 +339,17 @@ function CriarTarefa() {
               }
 
             </button>
+
+            {sucesso && (
+              <div className="success-modal">
+                <span className="success-icon">✓</span>
+
+                <div>
+                  <strong>Tarefa criada com sucesso!</strong>
+                  <span>A tarefa foi adicionada ao sistema.</span>
+                </div>
+              </div>
+            )}
 
           </div>
 

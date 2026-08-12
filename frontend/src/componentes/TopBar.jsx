@@ -1,6 +1,10 @@
 import '../css/TopBar.css'
+import { useNavigate } from 'react-router-dom'
 
 function TopBar({ titulo }) {
+
+  const navigate = useNavigate()
+
   return (
     <header className="top-bar">
 
@@ -10,12 +14,16 @@ function TopBar({ titulo }) {
 
       <div className="top-bar-actions">
 
-        <button className="new-task-button">
+        <button
+          className="new-task-button"
+          onClick={() => navigate('/criar-tarefa')}
+        >
           <span>+</span>
           Nova Tarefa
         </button>
 
         <div className="user-area">
+
           <span className="user-name">
             Administrador
           </span>
@@ -23,6 +31,7 @@ function TopBar({ titulo }) {
           <div className="user-avatar">
             A
           </div>
+
         </div>
 
       </div>

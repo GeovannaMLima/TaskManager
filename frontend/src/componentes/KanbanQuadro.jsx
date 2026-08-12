@@ -5,13 +5,14 @@ import '../css/KanbanQuadro.css'
 import KanbanColuna from './KanbanColuna'
 
 
-function KanbanQuadro() {
+function KanbanQuadro({ onStatusChanged }) {
 
   const [tarefas, setTarefas] = useState({
     todo: [],
     doing: [],
     done: []
   })
+
 
   const [carregando, setCarregando] = useState(true)
 
@@ -31,17 +32,23 @@ function KanbanQuadro() {
 
       setErro('')
 
+
       const resposta = await fetch(
         'http://localhost:8080/api/tasks'
       )
 
+
       if (!resposta.ok) {
+
         throw new Error(
           'Não foi possível carregar as tarefas.'
         )
+
       }
 
+
       const dados = await resposta.json()
+
 
       console.log(
         'Tarefas recebidas pelo Kanban:',
@@ -62,9 +69,11 @@ function KanbanQuadro() {
           novasTarefas.todo.push(tarefa)
         }
 
+
         if (tarefa.status === 'DOING') {
           novasTarefas.doing.push(tarefa)
         }
+
 
         if (tarefa.status === 'DONE') {
           novasTarefas.done.push(tarefa)
@@ -75,6 +84,7 @@ function KanbanQuadro() {
 
       setTarefas(novasTarefas)
 
+
     } catch (error) {
 
       console.error(
@@ -82,15 +92,18 @@ function KanbanQuadro() {
         error
       )
 
+
       setErro(
         'Não foi possível carregar as tarefas.'
       )
+
 
     } finally {
 
       setCarregando(false)
 
     }
+
   }
 
 
@@ -159,6 +172,7 @@ function KanbanQuadro() {
      * DONE
      */
 
+
     const colunaDestino =
       novoStatus.toLowerCase() === 'to-do'
         ? 'todo'
@@ -174,6 +188,7 @@ function KanbanQuadro() {
      * Descobre em qual coluna a tarefa
      * estava anteriormente.
      */
+
 
     Object.entries(tarefas).forEach(
       ([coluna, lista]) => {
@@ -201,6 +216,7 @@ function KanbanQuadro() {
      * não faz nada.
      */
 
+
     if (
       !tarefaMovida ||
       colunaAnterior === colunaDestino
@@ -220,6 +236,7 @@ function KanbanQuadro() {
        * Primeiro atualiza o backend.
        */
 
+
       await atualizarStatus(
         tarefaMovida.id,
         colunaDestino
@@ -227,8 +244,19 @@ function KanbanQuadro() {
 
 
       /*
+       * Avisa o Dashboard que o status
+       * foi alterado com sucesso.
+       */
+
+      if (onStatusChanged) {
+        onStatusChanged()
+      }
+
+
+      /*
        * Depois atualiza o estado visual.
        */
+
 
       const novasTarefas = {
         ...tarefas,
@@ -247,6 +275,7 @@ function KanbanQuadro() {
        * Remove a tarefa da coluna anterior.
        */
 
+
       novasTarefas[colunaAnterior] =
         novasTarefas[colunaAnterior].filter(
           (tarefa) =>
@@ -258,6 +287,7 @@ function KanbanQuadro() {
        * Converte o nome da coluna
        * para o enum utilizado pelo backend.
        */
+
 
       const statusMap = {
         todo: 'TODO',
@@ -276,6 +306,7 @@ function KanbanQuadro() {
       /*
        * Adiciona a tarefa na nova coluna.
        */
+
 
       novasTarefas[colunaDestino] = [
         ...novasTarefas[colunaDestino],
